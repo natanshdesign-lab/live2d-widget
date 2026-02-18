@@ -38,7 +38,9 @@
 
       window.addEventListener('resize', resizeModel);
       document.addEventListener('mousemove', (e) => model.focus(e.clientX, e.clientY));
-      model.on('hit', () => model.motion('Action', 0));
+      document.getElementById('canvas').addEventListener('click', () => {
+        model.motion('Action', 0);
+      });
     });
   </script>
 </body>
