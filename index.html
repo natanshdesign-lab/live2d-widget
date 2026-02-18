@@ -38,7 +38,9 @@
 
       window.addEventListener('resize', resizeModel);
       document.addEventListener('mousemove', (e) => model.focus(e.clientX, e.clientY));
-      document.getElementById('canvas').addEventListener('click', () => {
+      model.interactive = true;
+      model.buttonMode = true;
+      model.on('pointerdown', () => {
         model.motion('Action', 0);
       });
     });
