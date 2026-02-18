@@ -257,7 +257,7 @@
   },
   "models": [{
     "name": "Ren",
-    "paths": ["https://fastly.jsdelivr.net/gh/natanshdesign-lab/live2d-test@latest/runtime/ren.model3.json"],
+    "paths": ["https://natanshdesign-lab.github.io/live2d-widget/model/ren.model3.json"],
     "message": "Hello!"
   }]
 }
