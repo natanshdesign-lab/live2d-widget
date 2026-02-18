@@ -40,8 +40,10 @@
       document.addEventListener('mousemove', (e) => model.focus(e.clientX, e.clientY));
       model.interactive = true;
       model.buttonMode = true;
-      model.on('pointerdown', () => {
-        model.motion('Action', 0);
+      model.motion('Idle', 0);
+      model.on('pointerdown', async () => {
+        await model.motion('Action', 0);
+        model.motion('Idle', 0);
       });
     });
   </script>

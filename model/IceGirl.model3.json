@@ -93,7 +93,11 @@
 			}
 		],
 		"Motions": {
-			"Idle": [],
+			"Idle": [
+				{
+					"File": "DaiJi.motion3.json"
+				}
+			],
 			"Listening": [
 				{
 					"File": "DaiJi.motion3.json"
