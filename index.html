@@ -21,7 +21,7 @@
       antialias: true,
     });
 
-    PIXI.live2d.Live2DModel.from('./model/Hiyori.model3.json', { autoInteract: false }).then(model => {
+    PIXI.live2d.Live2DModel.from('./model/IceGirl.model3.json', { autoInteract: false }).then(model => {
       app.stage.addChild(model);
       const scale = Math.min(app.screen.width / model.width, app.screen.height / model.height) * 0.8;
       model.scale.set(scale);
