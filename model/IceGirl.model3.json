@@ -105,7 +105,8 @@
 			],
 			"Action": [
 				{
-					"File": "HuiShou.motion3.json"
+					"File": "HuiShou.motion3.json",
+					"FadeOutTime": 0.5
 				},
 				{
 					"File": "MeiYan.motion3.json"
