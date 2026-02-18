@@ -16,29 +16,31 @@
   <script>
     const app = new PIXI.Application({
       view: document.getElementById('canvas'),
-      transparent: true,
+      backgroundAlpha: 0,
       resizeTo: window,
       antialias: true,
     });
 
-    PIXI.live2d.Live2DModel.from('https://natanshdesign-lab.github.io/live2d-widget/model/ren.model3.json').then(model => {
+    const modelUrl = new URL('./model/ren.model3.json', window.location.href).href;
+
+    PIXI.live2d.Live2DModel.from(modelUrl, { autoInteract: false }).then(model => {
       app.stage.addChild(model);
 
       const scale = Math.min(
         app.screen.width / model.width,
         app.screen.height / model.height
-      );
-      model.scale.set(scale * 0.8);
-      model.x = (app.screen.width - model.width * scale * 0.8) / 2;
-      model.y = (app.screen.height - model.height * scale * 0.8) / 2;
+      ) * 0.8;
+      model.scale.set(scale);
+      model.x = (app.screen.width - model.width * scale) / 2;
+      model.y = (app.screen.height - model.height * scale) / 2;
 
-      // Make eyes follow the cursor
       document.addEventListener('mousemove', (e) => {
         model.focus(e.clientX, e.clientY);
       });
 
-      // Play idle motion
       model.motion('Idle');
+    }).catch(err => {
+      console.error('Model load failed:', err);
     });
   </script>
 </body>
