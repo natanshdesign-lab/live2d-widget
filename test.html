@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #eee; }
+    canvas { width: 100%; height: 100%; }
+    #status { position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: #0f0; font-family: monospace; font-size: 12px; padding: 10px; z-index: 999; max-width: 90%; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <div id="status">Loading...</div>
+  <canvas id="canvas"></canvas>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.5.10/browser/pixi.min.js" onload="document.getElementById('status').textContent+= '\npixi loaded'"></script>
+  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js" onload="document.getElementById('status').textContent+= '\ncubism loaded'"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js" onload="document.getElementById('status').textContent+= '\nlive2d loaded'"></script>
+  <script>
+    const app = new PIXI.Application({
+      view: document.getElementById('canvas'),
+      backgroundAlpha: 0,
+      resizeTo: window,
+      antialias: true,
+    });
+
+    PIXI.live2d.Live2DModel.from('./model/Hiyori.model3.json', { autoInteract: false }).then(model => {
+      app.stage.addChild(model);
+      const scale = Math.min(app.screen.width / model.width, app.screen.height / model.height) * 0.8;
+      model.scale.set(scale);
+      model.anchor.set(0.5, 0.5);
+      model.x = app.screen.width / 2;
+      model.y = app.screen.height / 2;
+
+      function resizeModel() {
+        const scale = Math.min(app.screen.width / model.internalModel.originalWidth, app.screen.height / model.internalModel.originalHeight) * 0.8;
+        model.scale.set(scale);
+        model.x = app.screen.width / 2;
+        model.y = app.screen.height / 2;
+      }
+
+      window.addEventListener('resize', resizeModel);
+
+      document.addEventListener('mousemove', (e) => model.focus(e.clientX, e.clientY));
+      document.getElementById('status').style.display = 'none';
+    }).catch(err => {
+      document.getElementById('status').textContent += '\nERROR: ' + err.message;
+    });
+  </script>
+</body>
+</html>

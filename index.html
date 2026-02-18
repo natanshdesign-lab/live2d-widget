@@ -21,26 +21,23 @@
       antialias: true,
     });
 
-    const modelUrl = new URL('./model/ren.model3.json', window.location.href).href;
-
-    PIXI.live2d.Live2DModel.from(modelUrl, { autoInteract: false }).then(model => {
+    PIXI.live2d.Live2DModel.from('./model/Hiyori.model3.json', { autoInteract: false }).then(model => {
       app.stage.addChild(model);
-
-      const scale = Math.min(
-        app.screen.width / model.width,
-        app.screen.height / model.height
-      ) * 0.8;
+      const scale = Math.min(app.screen.width / model.width, app.screen.height / model.height) * 0.8;
       model.scale.set(scale);
-      model.x = (app.screen.width - model.width * scale) / 2;
-      model.y = (app.screen.height - model.height * scale) / 2;
+      model.anchor.set(0.5, 0.5);
+      model.x = app.screen.width / 2;
+      model.y = app.screen.height / 2;
 
-      document.addEventListener('mousemove', (e) => {
-        model.focus(e.clientX, e.clientY);
-      });
+      function resizeModel() {
+        const scale = Math.min(app.screen.width / model.internalModel.originalWidth, app.screen.height / model.internalModel.originalHeight) * 0.8;
+        model.scale.set(scale);
+        model.x = app.screen.width / 2;
+        model.y = app.screen.height / 2;
+      }
 
-      model.motion('Idle');
-    }).catch(err => {
-      console.error('Model load failed:', err);
+      window.addEventListener('resize', resizeModel);
+      document.addEventListener('mousemove', (e) => model.focus(e.clientX, e.clientY));
     });
   </script>
 </body>
