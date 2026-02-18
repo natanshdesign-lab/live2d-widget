@@ -42,6 +42,13 @@
       model.buttonMode = true;
       model.on('pointerdown', () => {
         model.motion('Action', 0);
+        setTimeout(() => {
+          const coreModel = model.internalModel.coreModel;
+          const p58 = coreModel._model.parameters.ids.indexOf('Param58');
+          const p59 = coreModel._model.parameters.ids.indexOf('Param59');
+          if (p58 >= 0) coreModel.setParameterValueById('Param58', coreModel._model.parameters.defaultValues[p58]);
+          if (p59 >= 0) coreModel.setParameterValueById('Param59', coreModel._model.parameters.defaultValues[p59]);
+        }, 7200);
       });
     });
   </script>
