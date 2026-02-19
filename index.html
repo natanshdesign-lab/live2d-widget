@@ -14,7 +14,6 @@
   <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
   <script>
-    const modelUrl = './model/IceGirl.model3.json';
     const app = new PIXI.Application({
       view: document.getElementById('canvas'),
       backgroundAlpha: 0,
@@ -22,68 +21,23 @@
       antialias: true,
     });
 
-    let currentModel = null;
-    let waving = false;
-
-    function positionModel(model) {
+    PIXI.live2d.Live2DModel.from('./model/IceGirl.model3.json', { autoInteract: false }).then(model => {
+      app.stage.addChild(model);
       const scale = Math.min(app.screen.width / model.width, app.screen.height / model.height) * 0.8;
       model.scale.set(scale);
       model.anchor.set(0.5, 0.5);
       model.x = app.screen.width - (model.width * scale) / 2 - 300;
       model.y = app.screen.height / 2;
-    }
 
-    async function loadModel() {
-      const model = await PIXI.live2d.Live2DModel.from(modelUrl, { autoInteract: false });
-      app.stage.addChild(model);
-      positionModel(model);
+      function resizeModel() {
+        const scale = Math.min(app.screen.width / model.internalModel.originalWidth, app.screen.height / model.internalModel.originalHeight) * 0.8;
+        model.scale.set(scale);
+        model.x = app.screen.width - (model.width * scale) / 2 - 300;
+        model.y = app.screen.height / 2;
+      }
 
-      model.interactive = true;
-      model.buttonMode = true;
-      model.on('pointerdown', () => {
-        if (waving) return;
-        waving = true;
-        model.motion('Action', 0);
-        setTimeout(async () => {
-          app.stage.removeChild(model);
-          model.destroy();
-          currentModel = await reloadModel();
-          waving = false;
-        }, 7500);
-      });
-
-      return model;
-    }
-
-    async function reloadModel() {
-      const model = await PIXI.live2d.Live2DModel.from(modelUrl, { autoInteract: false });
-      app.stage.addChild(model);
-      positionModel(model);
-
-      model.interactive = true;
-      model.buttonMode = true;
-      model.on('pointerdown', () => {
-        if (waving) return;
-        waving = true;
-        model.motion('Action', 0);
-        setTimeout(async () => {
-          app.stage.removeChild(model);
-          model.destroy();
-          currentModel = await reloadModel();
-          waving = false;
-        }, 7500);
-      });
-
-      return model;
-    }
-
-    loadModel().then(model => { currentModel = model; });
-
-    window.addEventListener('resize', () => {
-      if (currentModel) positionModel(currentModel);
-    });
-    document.addEventListener('mousemove', (e) => {
-      if (currentModel) currentModel.focus(e.clientX, e.clientY);
+      window.addEventListener('resize', resizeModel);
+      document.addEventListener('mousemove', (e) => model.focus(e.clientX, e.clientY));
     });
   </script>
 </body>

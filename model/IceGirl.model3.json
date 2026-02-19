@@ -93,11 +93,7 @@
 			}
 		],
 		"Motions": {
-			"Idle": [
-				{
-					"File": "DaiJi.motion3.json"
-				}
-			],
+			"Idle": [],
 			"Listening": [
 				{
 					"File": "DaiJi.motion3.json"
@@ -105,8 +101,7 @@
 			],
 			"Action": [
 				{
-					"File": "HuiShou.motion3.json",
-					"FadeOutTime": 0.5
+					"File": "HuiShou.motion3.json"
 				},
 				{
 					"File": "MeiYan.motion3.json"
